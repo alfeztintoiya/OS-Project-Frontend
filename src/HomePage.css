@@ -1,0 +1,59 @@
+/* HomePage.css */
+
+.homepage-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center align content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .navigation-links {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .navigation-links li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  .navigation-links li:last-child {
+    margin-right: 0;
+  }
+  
+  .navigation-links li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+  
+  .navigation-links li a:hover {
+    color: #007bff; /* Change color on hover */
+  }
+  
+  .btnn {
+    margin: 20px;
+  }
+  
+  .btnn button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    width: auto;
+  }
+  
+  .btnn button:hover {
+    background-color: #0056b3; /* Darken color on hover */
+  }
+  
