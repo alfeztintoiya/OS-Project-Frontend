@@ -7,6 +7,7 @@ import './RoundRobin.css';
    const [burstTimes, setBurstTimes] = useState([]); // it consists array of values
    const [quantumTime, setQuantumTime] = useState('');// it consists only one value
    const [results, setResults] = useState(null);
+   // eslint-disable-next-line no-unused-vars
    const [ganttChart, setGanttChart] = useState([]);
    const [completionTimes, setCompletionTimes] = useState([]);
 
@@ -36,61 +37,70 @@ import './RoundRobin.css';
     return processes.map((process, index) => ({ process, arrivalTime: arrivalTimes[index], index })).sort((a, b) => a.arrivalTime - b.arrivalTime);
     };
 
+    const renderGanttChart = () => {
+      return (
+        <div className="gantt-chart">
+          {ganttChart.map((process, index) => (
+            <div key={index} className={`process-${process.p_no}`} style={{ width: `${process.duration * 20}px` }}>
+              {`P${process.p_no}`}
+            </div>
+          ))}
+        </div>
+      );
+    };
    //this variable the main Algorithm of Round Robin Scheduling.
    const handleSubmit = (e) => {
-     e.preventDefault();
-     
-     const sortedProcesses = sortProcessesByArrivalTime();
-     let currentTime = 0;
-     let remainingBurstTimes = [...burstTimes];
-     let turnaroundTimes = new Array(processes.length).fill(0);
-     let waitingTimes = new Array(processes.length).fill(0);
-     let totalWaitingTime = 0;
-     let totalTurnaroundTime = 0;
-     let quantum = quantumTime;
-     //let index = 0;
-
-     const ganttChart=[];
-     while (true) {
+    e.preventDefault();
+  
+    const sortedProcesses = sortProcessesByArrivalTime();
+    let currentTime = 0;
+    let remainingBurstTimes = [...burstTimes];
+    let completionTimes = new Array(processes.length).fill(0);
+    let turnaroundTimes = new Array(processes.length).fill(0);
+    let waitingTimes = new Array(processes.length).fill(0);
+    let totalWaitingTime = 0;
+    let totalTurnaroundTime = 0;
+    let quantum = parseInt(quantumTime);
+    let readyQueue = sortedProcesses.map((process) => process.index);
+  
+    while (readyQueue.length > 0) {
       let allCompleted = true;
-
-      for (let i = 0; i < sortedProcesses.length; i++) {
-        const process = sortedProcesses[i];
-        if (arrivalTimes[process.index] <= currentTime && remainingBurstTimes[process.index] > 0) {
+  
+      for (let i = 0; i < readyQueue.length; i++) {
+        const currentProcessIndex = readyQueue[i];
+        const burstTime = Math.min(quantum, remainingBurstTimes[currentProcessIndex]);
+        
+        ganttChart.push({ p_no: currentProcessIndex + 1, start: currentTime, duration: burstTime });
+        
+        currentTime += burstTime;
+        remainingBurstTimes[currentProcessIndex] -= burstTime;
+  
+        if (remainingBurstTimes[currentProcessIndex] === 0) {
+          completionTimes[currentProcessIndex] = currentTime;
+          turnaroundTimes[currentProcessIndex] = completionTimes[currentProcessIndex] - arrivalTimes[currentProcessIndex];
+          waitingTimes[currentProcessIndex] = turnaroundTimes[currentProcessIndex] - burstTimes[currentProcessIndex];
+          readyQueue.splice(i, 1); // Remove completed process from the ready queue
+          i--; // Adjust loop index since we removed an element
+        } else {
           allCompleted = false;
-
-          const executionTime = Math.min(quantum, remainingBurstTimes[process.index]);
-          remainingBurstTimes[process.index] -= executionTime;
-
-          for (let j = 0; j < executionTime; j++) {
-            ganttChart.push({ p_no: process.index + 1, start: currentTime + j, end: currentTime + j + 1 });
-          }
-
-          currentTime += executionTime;
-
-          if (remainingBurstTimes[process.index] === 0) {
-            turnaroundTimes[process.index] = currentTime - arrivalTimes[process.index];
-            waitingTimes[process.index] = turnaroundTimes[process.index] - burstTimes[process.index];
-            completionTimes[process.index] = currentTime;
-          }
         }
       }
-
-       if (allCompleted) break;
-     }
-
-      totalWaitingTime = waitingTimes.reduce((acc, curr) => acc + curr, 0);
-      totalTurnaroundTime = turnaroundTimes.reduce((acc, curr) => acc + curr, 0);
-
-
-     const averageWaitingTime = totalWaitingTime / processes.length;
-     const averageTurnaroundTime = totalTurnaroundTime / processes.length;
-
-     setResults({ waitingTimes, turnaroundTimes, averageWaitingTime, averageTurnaroundTime });
-     setGanttChart(ganttChart);
-     setCompletionTimes(completionTimes); 
-   };
-
+  
+      if (allCompleted) break;
+    }
+  
+    totalWaitingTime = waitingTimes.reduce((acc, curr) => acc + curr, 0);
+    totalTurnaroundTime = turnaroundTimes.reduce((acc, curr) => acc + curr, 0);
+  
+    const averageWaitingTime = totalWaitingTime / processes.length;
+    const averageTurnaroundTime = totalTurnaroundTime / processes.length;
+  
+    setResults({ waitingTimes, turnaroundTimes, averageWaitingTime, averageTurnaroundTime });
+    setCompletionTimes(completionTimes);
+  };
+  
+  
+  
    const renderResults = () => {
      if (!results) return null;
 
@@ -128,21 +138,21 @@ import './RoundRobin.css';
    };
 
    //this variable prints the gantt chart
-   const renderGanttChart = () => {
+  //  const renderGanttChart = () => {
     
-     return (
-       <div className="gantt-chart">
-         {ganttChart.map((process, index) => (
-           <div key={index} className={`process-${process.p_no}`} style={{ width: `${process.end - process.start}em` }}>
-             {`P${process.p_no}`}
-          <span className="process-label">P{process.p_no}</span>
-          <span className="time-subscript start-time">{process.start}</span>
-          <span className="time-subscript end-time">{process.end}</span>
-           </div>
-         ))}
-       </div>
-    );
-  };
+  //    return (
+  //      <div className="gantt-chart">
+  //        {ganttChart.map((process, index) => (
+  //          <div key={index} className={`process-${process.p_no}`} style={{ width: `${process.end - process.start}em` }}>
+  //            {`P${process.p_no}`}
+  //         <span className="process-label">P{process.p_no}</span>
+  //         <span className="time-subscript start-time">{process.start}</span>
+  //         <span className="time-subscript end-time">{process.end}</span>
+  //          </div>
+  //        ))}
+  //      </div>
+  //   );
+  // };
 
   //returns and calculate the whole calculation of Round Robin(including gantt chart).
   return (
@@ -202,7 +212,6 @@ import './RoundRobin.css';
        </form>
 
        {renderResults()}
-
        {renderGanttChart()}
      </div>
    );

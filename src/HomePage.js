@@ -1,18 +1,15 @@
-// HomePage.js
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import './HomePage.css'; // Import HomePage.css for styling
+import { Link } from 'react-router-dom'; 
+import './HomePage.css'; 
 
 function HomePage() {
   return (
-    <div className="homepage-container"> {/* Apply homepage-container class */}
-      {/* <h2>Operating </h2> */}
-      
-      <ul className="navigation-links"> {/* Apply navigation-links class */}
-        <li><Link to="/RoundRobinScheduler"></Link></li> {/* Link to RoundRobinScheduler.js */}
+    <div className="homepage-container"> 
+      <ul className="navigation-links"> 
+        <li><Link to="/RoundRobinScheduler"></Link></li> 
       </ul>
-      <div className="btnn"> {/* Apply btn class */}
-        <Link to="/RoundRobinScheduler"> {/* Link to RoundRobinScheduler.js */}
+      <div className="btnn"> 
+        <Link to="/RoundRobinScheduler"> 
           <button type="button">
             Round Robin Scheduler
           </button>
