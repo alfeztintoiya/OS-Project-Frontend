@@ -39,7 +39,7 @@
   
   .input-container input {
     margin: 0 5px; 
-    border-color: blue;
+    border-color: #1B4242;
     background-color: #f2f2f2;
     border-radius: 5px;
     padding: 5px;
@@ -68,7 +68,7 @@
   
   button {
     cursor: pointer;
-    background-color: rgb(56, 56, 187);
+    background-color: #1B4242;
     padding: 10px;
     color: white;
     border-radius: 5px;

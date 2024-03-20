@@ -60,7 +60,7 @@ import './RoundRobin.css';
     let waitingTimes = new Array(processes.length).fill(0);
     let totalWaitingTime = 0;
     let totalTurnaroundTime = 0;
-    let quantum = parseInt(quantumTime);
+    let quantum = quantumTime;
     let readyQueue = sortedProcesses.map((process) => process.index);
   
     while (readyQueue.length > 0) {
@@ -89,8 +89,8 @@ import './RoundRobin.css';
       if (allCompleted) break;
     }
   
-    totalWaitingTime = waitingTimes.reduce((acc, curr) => acc + curr, 0);
-    totalTurnaroundTime = turnaroundTimes.reduce((acc, curr) => acc + curr, 0);
+    // totalWaitingTime = waitingTimes.reduce((acc, curr) => acc + curr, 0);
+    // totalTurnaroundTime = turnaroundTimes.reduce((acc, curr) => acc + curr, 0);
   
     const averageWaitingTime = totalWaitingTime / processes.length;
     const averageTurnaroundTime = totalTurnaroundTime / processes.length;

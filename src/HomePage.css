@@ -29,7 +29,7 @@
   }
   
   .navigation-links li a:hover {
-    color: #007bff; 
+    color: #5C8374; 
   }
   
   .btnn {
@@ -41,7 +41,7 @@
   }
   
   .btnn button {
-    background-color: #007bff;
+    background-color: #1B4242;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -53,6 +53,6 @@
   }
   
   .btnn button:hover {
-    background-color: #0056b3; 
+    background-color: #092635; 
   }
   
